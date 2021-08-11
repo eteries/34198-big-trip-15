@@ -9,6 +9,7 @@ import {
 } from '../utils/random.js';
 import { tripEventTypes } from './event-types.js';
 import { MOCK_TEXT } from './text.js';
+import { dateFrom, dateTo} from './date.js';
 
 const EventPrice = {
   MIN: 50,
@@ -23,8 +24,8 @@ const IdRange = {
 export function generateTripEvent () {
   return {
     basePrice: getRandomInt(EventPrice.MIN, EventPrice.MAX),
-    dateFrom: null,
-    dateTo: null,
+    dateFrom,
+    dateTo,
     destination: generateDestination(),
     id: getUniqueRandomInt(IdRange.MIN, IdRange.MAX)(),
     offers: getRandomSubArray(offer.offers),
