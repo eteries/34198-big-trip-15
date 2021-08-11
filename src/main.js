@@ -10,6 +10,10 @@ import { createNavigationTemplate } from './views/navigation.js';
 import { createFiltersTemplate } from './views/filters.js';
 import { createSortingTemplate } from './views/sorting.js';
 
+import { generateTripEvent } from './mock/trip-event.js';
+
+generateTripEvent();
+
 const RENDERED_EVENTS_NUMBER = 3;
 
 const render = (container, template, position) => {
