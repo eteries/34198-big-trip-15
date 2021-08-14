@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import { getRandomInt } from '../utils/random.js';
+import {formatDate, addTimeInterval, subtractTimeInterval} from '../utils/date.js';
 
-const StartDays = {
-  MIN: 1,
-  MAX: 14,
+const StartMinutes = {
+  MIN: 0,
+  MAX: 60*24*14,
 };
 
 const DurationMinutes = {
@@ -13,7 +13,16 @@ const DurationMinutes = {
 
 const API_DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS[Z]';
 
-const dateFrom = dayjs().add(getRandomInt(StartDays.MIN,StartDays.MAX), 'day').format(API_DATE_FORMAT);
-const dateTo = dayjs(dateFrom).add(getRandomInt(DurationMinutes.MIN, DurationMinutes.MAX), 'minute').format(API_DATE_FORMAT);
+const generateDateFrom = () => {
+  const newDate = getRandomInt(0,1)
+    ? addTimeInterval(Date.now(), getRandomInt(StartMinutes.MIN, StartMinutes.MAX), 'minute')
+    : subtractTimeInterval(Date.now(), getRandomInt(StartMinutes.MIN, StartMinutes.MAX), 'minute');
+  return formatDate(newDate, API_DATE_FORMAT);
+};
 
-export { dateFrom, dateTo };
+const generateDateTo = (dateFrom) => {
+  const newDate = addTimeInterval(dateFrom, getRandomInt(DurationMinutes.MIN, DurationMinutes.MAX), 'minute');
+  return formatDate(newDate, API_DATE_FORMAT);
+};
+
+export { generateDateFrom, generateDateTo };

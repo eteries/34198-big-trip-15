@@ -9,11 +9,11 @@ import {
 } from '../utils/random.js';
 import { tripEventTypes } from './event-types.js';
 import { MOCK_TEXT } from './text.js';
-import { dateFrom, dateTo} from './date.js';
+import { generateDateFrom, generateDateTo } from './date.js';
 
 const EventPrice = {
   MIN: 50,
-  MAX: 1500,
+  MAX: 1000,
 };
 
 const IdRange = {
@@ -22,11 +22,15 @@ const IdRange = {
 };
 
 export function generateTripEvent () {
+  const dateFrom = generateDateFrom();
+  const dateTo = generateDateTo(dateFrom);
+
   return {
     basePrice: getRandomInt(EventPrice.MIN, EventPrice.MAX),
     dateFrom,
     dateTo,
     destination: generateDestination(),
+    isFavorite: Boolean(getRandomInt(0,1)),
     id: getUniqueRandomInt(IdRange.MIN, IdRange.MAX)(),
     offers: getRandomSubArray(offer.offers),
     description: getRandomSubPhrase(MOCK_TEXT),

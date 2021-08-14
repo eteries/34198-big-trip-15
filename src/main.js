@@ -11,10 +11,11 @@ import { createFiltersTemplate } from './views/filters.js';
 import { createSortingTemplate } from './views/sorting.js';
 
 import { generateTripEvent } from './mock/trip-event.js';
+import {getUnixDate} from './utils/date';
 
 generateTripEvent();
 
-const RENDERED_EVENTS_NUMBER = 3;
+const RENDERED_EVENTS_NUMBER = 15;
 
 const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
@@ -39,6 +40,9 @@ render(pageTripEventsElement, createStatisticsTemplate(), 'afterend');
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
 render(pageEventListElement, createTripEventEditTemplate(), 'beforeend');
-for (let i = 0; i < RENDERED_EVENTS_NUMBER; i++) {
-  render(pageEventListElement, createTripEventTemplate(), 'beforeend');
-}
+new Array(RENDERED_EVENTS_NUMBER)
+  .fill(null)
+  .map(() => generateTripEvent())
+  .sort(((eventA, eventB) => getUnixDate(eventA.dateFrom) - getUnixDate(eventB.dateFrom)))
+  .forEach((tripEvent) => render(pageEventListElement, createTripEventTemplate(tripEvent), 'beforeend'));
+
