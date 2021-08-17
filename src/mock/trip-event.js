@@ -1,5 +1,5 @@
-import { generateDestination } from './destination.js';
-import { offer } from './offer.js';
+import { destinations } from './destination.js';
+import { offers } from './offer.js';
 import {
   getRandomArrayElement,
   getRandomInt,
@@ -29,10 +29,10 @@ export function generateTripEvent () {
     basePrice: getRandomInt(EventPrice.MIN, EventPrice.MAX),
     dateFrom,
     dateTo,
-    destination: generateDestination(),
+    destination: getRandomArrayElement(destinations),
     isFavorite: Boolean(getRandomInt(0,1)),
     id: getUniqueRandomInt(IdRange.MIN, IdRange.MAX)(),
-    offers: getRandomSubArray(offer.offers),
+    offers: getRandomSubArray(offers[0].offers),
     description: getRandomSubPhrase(MOCK_TEXT),
     type: getRandomArrayElement(tripEventTypes),
   };

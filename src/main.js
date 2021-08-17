@@ -39,7 +39,7 @@ render(pageTripEventsElement, createLoadingTemplate(), 'beforeend');
 render(pageTripEventsElement, createStatisticsTemplate(), 'afterend');
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
-render(pageEventListElement, createTripEventEditTemplate(), 'beforeend');
+render(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), 'beforeend');
 new Array(RENDERED_EVENTS_NUMBER)
   .fill(null)
   .map(() => generateTripEvent())
