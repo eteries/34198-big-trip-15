@@ -7,8 +7,8 @@ const CITIES = [
   'Amsterdam',
 ];
 
-function generateDestination (city) {
-  return {
+const generateDestination = (city) => (
+  {
     name: city,
     description: getRandomSubPhrase(MOCK_TEXT),
     pictures: [
@@ -21,7 +21,7 @@ function generateDestination (city) {
         description: getRandomSubPhrase(MOCK_TEXT),
       },
     ],
-  };
-}
+  }
+);
 
 export const destinations =  CITIES.map((city) => generateDestination(city));

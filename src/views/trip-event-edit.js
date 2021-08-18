@@ -10,33 +10,33 @@ const createEventTypeTemplate = (type, currentType) => (
   </div>`
 );
 
-const createEventTypesTemplate = (types, currentType) => (
+const createEventTypesTemplate = (currentType) => (
   tripEventTypes
     .map((type) => createEventTypeTemplate(type, currentType))
     .join('')
 );
 
-const getOffersByType = () => availableOffers
-  .filter((offer) => offer.type === 'mock')[0].offers;
+const getOffersByType = (type) => availableOffers
+  .filter((offer) => offer.type === type || offer.type === 'mock')[0].offers;
 
-const createOfferTemplate = (offer, selectedOffers) => (
+const createOfferTemplate = (currentOffer, selectedOffers) => (
   `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden"
            id="event-offer-meal-1"
            type="checkbox"
            name="event-offer-meal"
-           ${selectedOffers.some(({title}) => title === offer.title) ? 'checked' : ''}>
+           ${selectedOffers.find(({title}) => title === currentOffer.title) ? 'checked' : ''}>
     <label class="event__offer-label" for="event-offer-meal-1">
-      <span class="event__offer-title">${offer.title}</span>
+      <span class="event__offer-title">${currentOffer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer.price}</span>
+      <span class="event__offer-price">${currentOffer.price}</span>
     </label>
   </div>`
 );
 
-const createTripEventOffersTemplate = (selectedOffers) => (
-  getOffersByType()
-    .map((offer) => createOfferTemplate(offer, selectedOffers))
+const createTripEventOffersTemplate = (type, selectedOffers) => (
+  getOffersByType(type)
+    .map((availableOffer) => createOfferTemplate(availableOffer, selectedOffers))
     .join('')
 );
 
@@ -46,7 +46,11 @@ const createDestinationSelectTemplate = () => (
     .join('')
 );
 
-export const createTripEventEditTemplate = ({type = 'bus', destination = {name: '', description: '', pictures: []}, dateFrom = null, dateTo, basePrice = '', offers = []} = {}) => (
+const createPicturesTemplate = (pictures) => (
+  pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}">`).join('')
+);
+
+export const createTripEventEditTemplate = ({type = 'bus', destination = {name: '', description: '', pictures: []}, dateFrom = null, dateTo = null, basePrice = '', offers = []} = {}) => (
   `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -60,7 +64,7 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {name: 
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
-              ${createEventTypesTemplate(tripEventTypes, type)}
+              ${createEventTypesTemplate(type)}
             </fieldset>
           </div>
         </div>
@@ -102,13 +106,18 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {name: 
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            ${createTripEventOffersTemplate(offers)}
+            ${createTripEventOffersTemplate(type, offers)}
           </div>
         </section>
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${destination.description}</p>
+          <div class="event__photos-container">
+            <div class="event__photos-tape">
+              ${createPicturesTemplate(destination.pictures)}
+            </div>
+          </div>
         </section>
       </section>
     </form>

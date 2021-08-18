@@ -8,12 +8,6 @@ const createOfferItemTemplate = ({title, price}) => (
   </li>`
 );
 
-const createOffersTemplate = (offers) => (
-  offers
-    .map((offer) => createOfferItemTemplate(offer))
-    .join('')
-);
-
 const createDurationTemplate = (dateFrom, dateTo) => formatDuration(getDuration(dateFrom, dateTo));
 
 export const createTripEventTemplate = ({dateFrom, dateTo, type, destination, basePrice, offers, isFavorite}) => (
@@ -43,7 +37,7 @@ export const createTripEventTemplate = ({dateFrom, dateTo, type, destination, ba
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${createOffersTemplate(offers)}
+        ${offers.map((offer) => createOfferItemTemplate(offer)).join('')}
       </ul>
       <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
         <span class="visually-hidden">Add to favorite</span>

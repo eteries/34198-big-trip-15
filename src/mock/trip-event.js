@@ -21,7 +21,7 @@ const IdRange = {
   MAX: 9999,
 };
 
-export function generateTripEvent () {
+export const generateTripEvent = () => {
   const dateFrom = generateDateFrom();
   const dateTo = generateDateTo(dateFrom);
 
@@ -36,4 +36,4 @@ export function generateTripEvent () {
     description: getRandomSubPhrase(MOCK_TEXT),
     type: getRandomArrayElement(tripEventTypes),
   };
-}
+};
