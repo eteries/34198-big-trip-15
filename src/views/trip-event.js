@@ -8,7 +8,7 @@ const createOfferItemTemplate = ({title, price}) => (
   </li>`
 );
 
-const offersTemplate = (offers) => (
+const createOffersTemplate = (offers) => (
   offers
     .map((offer) => createOfferItemTemplate(offer))
     .join('')
@@ -43,7 +43,7 @@ export const createTripEventTemplate = ({dateFrom, dateTo, type, destination, ba
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${offersTemplate(offers)}
+        ${createOffersTemplate(offers)}
       </ul>
       <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
         <span class="visually-hidden">Add to favorite</span>

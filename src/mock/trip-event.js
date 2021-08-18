@@ -1,5 +1,5 @@
-import { destinations } from './destination.js';
-import { offers } from './offer.js';
+import { destinations } from './destinations.js';
+import { offers } from './offers.js';
 import {
   getRandomArrayElement,
   getRandomInt,

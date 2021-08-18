@@ -1,6 +1,6 @@
 import { tripEventTypes } from '../mock/event-types.js';
-import { destinations } from '../mock/destination.js';
-import { offers as availableOffers } from '../mock/offer.js';
+import { destinations } from '../mock/destinations.js';
+import { offers as availableOffers } from '../mock/offers.js';
 import { formatDate } from '../utils/date.js';
 
 const createEventTypeTemplate = (type, currentType) => (
@@ -46,7 +46,7 @@ const createDestinationSelectTemplate = () => (
     .join('')
 );
 
-export const createTripEventEditTemplate = ({type, destination, dateFrom, dateTo, basePrice, offers} = {}) => (
+export const createTripEventEditTemplate = ({type = 'bus', destination = {name: '', description: '', pictures: []}, dateFrom = null, dateTo, basePrice = '', offers = []} = {}) => (
   `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -77,10 +77,10 @@ export const createTripEventEditTemplate = ({type, destination, dateFrom, dateTo
 
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDate(dateFrom, 'DD/MM/YY hh:mm')}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom ? formatDate(dateFrom, 'DD/MM/YY hh:mm') : ''}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDate(dateTo, 'DD/MM/YY hh:mm')}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo ? formatDate(dateTo, 'DD/MM/YY hh:mm') : ''}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
