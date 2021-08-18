@@ -10,7 +10,7 @@ const createOfferItemTemplate = ({title, price}) => (
 
 const createDurationTemplate = (dateFrom, dateTo) => formatDuration(getDuration(dateFrom, dateTo));
 
-export const createTripEventTemplate = ({dateFrom, dateTo, type, destination, basePrice, offers, isFavorite}) => (
+export const createTripEventTemplate = ({dateFrom = null, dateTo = null, type = 'bus', destination = {}, basePrice = '', offers = [], isFavorite = false}) => (
   `<li class="trip-events__item">
     <div class="event">
       <time class="event__date" datetime="${formatDate(dateFrom, 'YYYY-MM-DD')}">
@@ -19,7 +19,7 @@ export const createTripEventTemplate = ({dateFrom, dateTo, type, destination, ba
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${destination.name}</h3>
+      <h3 class="event__title">${type} ${destination.name ? destination.name : ''}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${formatDate(dateFrom, 'YYYY-MM-DD[T]HH:mm')}">

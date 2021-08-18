@@ -19,7 +19,8 @@ const RENDERED_EVENTS_NUMBER = 15;
 
 const TRIP_EVENTS = new Array(RENDERED_EVENTS_NUMBER)
   .fill(null)
-  .map(() => generateTripEvent());
+  .map(() => generateTripEvent())
+  .sort(((eventA, eventB) => getUnixDate(eventA.dateFrom) - getUnixDate(eventB.dateFrom)));
 
 const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
@@ -29,7 +30,7 @@ const tripMainElement = document.querySelector('.trip-main');
 render(tripMainElement, createTripInfoTemplate(), 'afterbegin');
 
 const tripInfoElement = tripMainElement.querySelector('.trip-info');
-render(tripInfoElement, createTripRouteTemplate(), 'beforeend');
+render(tripInfoElement, createTripRouteTemplate(TRIP_EVENTS), 'beforeend');
 render(tripInfoElement, createTripCostTemplate(TRIP_EVENTS), 'beforeend');
 
 const controlsElement = tripMainElement.querySelector('.trip-controls');
@@ -45,6 +46,5 @@ render(pageTripEventsElement, createStatisticsTemplate(), 'afterend');
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
 render(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), 'beforeend');
 TRIP_EVENTS
-  .sort(((eventA, eventB) => getUnixDate(eventA.dateFrom) - getUnixDate(eventB.dateFrom)))
   .forEach((tripEvent) => render(pageEventListElement, createTripEventTemplate(tripEvent), 'beforeend'));
 

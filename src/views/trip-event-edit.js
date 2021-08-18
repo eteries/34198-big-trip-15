@@ -50,7 +50,7 @@ const createPicturesTemplate = (pictures) => (
   pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}">`).join('')
 );
 
-export const createTripEventEditTemplate = ({type = 'bus', destination = {name: '', description: '', pictures: []}, dateFrom = null, dateTo = null, basePrice = '', offers = []} = {}) => (
+export const createTripEventEditTemplate = ({type = 'bus', destination = {}, dateFrom = null, dateTo = null, basePrice = '', offers = []} = {}) => (
   `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -73,7 +73,7 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {name: 
           <label class="event__label  event__type-output" for="event-destination-1">
             ${type}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name ? destination.name : ''}" list="destination-list-1">
           <datalist id="destination-list-1">
             ${createDestinationSelectTemplate(getOffersByType(), offers)};
           </datalist>
@@ -112,10 +112,10 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {name: 
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${destination.description}</p>
+          <p class="event__destination-description">${destination.description ? destination.description : ''}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
-              ${createPicturesTemplate(destination.pictures)}
+              ${destination.pictures ? createPicturesTemplate(destination.pictures) : ''}
             </div>
           </div>
         </section>
