@@ -10,7 +10,17 @@ import { createNavigationTemplate } from './views/navigation.js';
 import { createFiltersTemplate } from './views/filters.js';
 import { createSortingTemplate } from './views/sorting.js';
 
-const RENDERED_EVENTS_NUMBER = 3;
+import { generateTripEvent } from './mock/trip-event.js';
+import {getUnixDate} from './utils/date';
+
+generateTripEvent();
+
+const RENDERED_EVENTS_NUMBER = 15;
+
+const TRIP_EVENTS = new Array(RENDERED_EVENTS_NUMBER)
+  .fill(null)
+  .map(() => generateTripEvent())
+  .sort(((eventA, eventB) => getUnixDate(eventA.dateFrom) - getUnixDate(eventB.dateFrom)));
 
 const render = (container, template, position) => {
   container.insertAdjacentHTML(position, template);
@@ -20,8 +30,8 @@ const tripMainElement = document.querySelector('.trip-main');
 render(tripMainElement, createTripInfoTemplate(), 'afterbegin');
 
 const tripInfoElement = tripMainElement.querySelector('.trip-info');
-render(tripInfoElement, createTripRouteTemplate(), 'beforeend');
-render(tripInfoElement, createTripCostTemplate(), 'beforeend');
+render(tripInfoElement, createTripRouteTemplate(TRIP_EVENTS), 'beforeend');
+render(tripInfoElement, createTripCostTemplate(TRIP_EVENTS), 'beforeend');
 
 const controlsElement = tripMainElement.querySelector('.trip-controls');
 render(controlsElement, createNavigationTemplate(), 'beforeend');
@@ -34,7 +44,7 @@ render(pageTripEventsElement, createLoadingTemplate(), 'beforeend');
 render(pageTripEventsElement, createStatisticsTemplate(), 'afterend');
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
-render(pageEventListElement, createTripEventEditTemplate(), 'beforeend');
-for (let i = 0; i < RENDERED_EVENTS_NUMBER; i++) {
-  render(pageEventListElement, createTripEventTemplate(), 'beforeend');
-}
+render(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), 'beforeend');
+TRIP_EVENTS
+  .forEach((tripEvent) => render(pageEventListElement, createTripEventTemplate(tripEvent), 'beforeend'));
+

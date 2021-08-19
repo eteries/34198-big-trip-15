@@ -1,6 +1,18 @@
+const TABS = [
+  {
+    title: 'Table',
+    isActive: true,
+  },
+  {
+    title: 'Stats',
+    isActive: false,
+  },
+];
+
 export const createNavigationTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-    <a class="trip-tabs__btn" href="#">Stats</a>
+    ${TABS.map(({title, isActive}) => (
+    `<a class="trip-tabs__btn ${isActive ? 'trip-tabs__btn--active' : ''}" href="#">${title}</a>`
+  )).join('')}
   </nav>`
 );
