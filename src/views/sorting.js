@@ -1,3 +1,5 @@
+import { createElement } from '../utils/dom.js';
+
 const SORTINGS = [
   {
     title: 'Day',
@@ -38,3 +40,25 @@ export const createSortingTemplate = () => (
     ${SORTINGS.map((sorting) => createSortingItenTemplate(sorting)).join('')}
   </form>`
 );
+
+export default class Sorting {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortingTemplate();
+  }
+
+  getElement() {
+    if (this._element) {
+      return this._element;
+    }
+
+    return createElement(this.getTemplate());
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}

@@ -1,17 +1,18 @@
-import { createTripInfoTemplate } from './views/trip-info.js';
-import { createTripRouteTemplate } from './views/trip-route.js';
-import { createTripCostTemplate } from './views/trip-cost.js';
-import { createStatisticsTemplate } from './views/statistics.js';
-import { createLoadingTemplate } from './views/loading.js';
-import { createTripEventsTemplate } from './views/trip-events.js';
+import TripInfoView from './views/trip-info.js';
+import TripRouteView from './views/trip-route.js';
+import TripCostView from './views/trip-cost.js';
+import StatisticsView from './views/statistics.js';
+import LoadingView from './views/loading.js';
+import TripEventsView from './views/trip-events.js';
 import { createTripEventTemplate } from './views/trip-event.js';
 import { createTripEventEditTemplate } from './views/trip-event-edit.js';
-import { createNavigationTemplate } from './views/navigation.js';
-import { createFiltersTemplate } from './views/filters.js';
-import { createSortingTemplate } from './views/sorting.js';
+import NavigationView from './views/navigation.js';
+import FiltersView from './views/filters.js';
+import SortingView from './views/sorting.js';
 
 import { generateTripEvent } from './mock/trip-event.js';
-import {getUnixDate} from './utils/date';
+import { getUnixDate } from './utils/date.js';
+import { Positions, renderTemplate, renderElement } from './utils/dom.js';
 
 generateTripEvent();
 
@@ -22,29 +23,25 @@ const TRIP_EVENTS = new Array(RENDERED_EVENTS_NUMBER)
   .map(() => generateTripEvent())
   .sort(((eventA, eventB) => getUnixDate(eventA.dateFrom) - getUnixDate(eventB.dateFrom)));
 
-const render = (container, template, position) => {
-  container.insertAdjacentHTML(position, template);
-};
-
 const tripMainElement = document.querySelector('.trip-main');
-render(tripMainElement, createTripInfoTemplate(), 'afterbegin');
+const tripInfoView = new TripInfoView();
+renderElement(tripMainElement, tripInfoView.getElement(), Positions.AFTER_BEGIN);
 
-const tripInfoElement = tripMainElement.querySelector('.trip-info');
-render(tripInfoElement, createTripRouteTemplate(TRIP_EVENTS), 'beforeend');
-render(tripInfoElement, createTripCostTemplate(TRIP_EVENTS), 'beforeend');
+renderElement(tripInfoView.getElement(), new TripRouteView(TRIP_EVENTS).getElement(), Positions.BEFORE_END);
+renderElement(tripInfoView.getElement(), new TripCostView(TRIP_EVENTS).getElement(), Positions.BEFORE_END);
 
 const controlsElement = tripMainElement.querySelector('.trip-controls');
-render(controlsElement, createNavigationTemplate(), 'beforeend');
-render(controlsElement, createFiltersTemplate(), 'beforeend');
+renderElement(controlsElement, new NavigationView().getElement(), Positions.BEFORE_END);
+renderElement(controlsElement, new FiltersView().getElement(), Positions.BEFORE_END);
 
 const pageTripEventsElement = document.querySelector('.trip-events');
-render(pageTripEventsElement, createSortingTemplate(), 'beforeend');
-render(pageTripEventsElement, createTripEventsTemplate(), 'beforeend');
-render(pageTripEventsElement, createLoadingTemplate(), 'beforeend');
-render(pageTripEventsElement, createStatisticsTemplate(), 'afterend');
+renderElement(pageTripEventsElement, new SortingView().getElement(), Positions.BEFORE_END);
+renderElement(pageTripEventsElement, new TripEventsView().getElement(), Positions.BEFORE_END);
+renderElement(pageTripEventsElement, new LoadingView().getElement(), Positions.BEFORE_END);
+renderElement(pageTripEventsElement, new StatisticsView().getElement(), Positions.AFTER_END);
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
-render(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), 'beforeend');
+renderTemplate(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), Positions.BEFORE_END);
 TRIP_EVENTS
-  .forEach((tripEvent) => render(pageEventListElement, createTripEventTemplate(tripEvent), 'beforeend'));
+  .forEach((tripEvent) => renderTemplate(pageEventListElement, createTripEventTemplate(tripEvent), Positions.BEFORE_END));
 

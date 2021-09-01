@@ -1,3 +1,5 @@
+import { createElement } from '../utils/dom.js';
+
 const TABS = [
   {
     title: 'Table',
@@ -16,3 +18,25 @@ export const createNavigationTemplate = () => (
   )).join('')}
   </nav>`
 );
+
+export default class Navigation {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createNavigationTemplate();
+  }
+
+  getElement() {
+    if (this._element) {
+      return this._element;
+    }
+
+    return createElement(this.getTemplate());
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}

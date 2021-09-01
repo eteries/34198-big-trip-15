@@ -1,4 +1,5 @@
 import { formatTripInterval } from '../utils/date.js';
+import { createElement } from '../utils/dom.js';
 
 export const createTripRouteTemplate = (tripEvents) => {
   const uniqueCities = [...new Set(tripEvents.map(({destination = {}}) => destination.name))];
@@ -14,3 +15,26 @@ export const createTripRouteTemplate = (tripEvents) => {
     <p class="trip-info__dates">${formatTripInterval(dateFrom, dateTo)}</p>
   </div>`;
 };
+
+export default class TripRoute {
+  constructor(tripEvents) {
+    this._element = null;
+    this._tripEvents = tripEvents;
+  }
+
+  getTemplate() {
+    return createTripRouteTemplate(this._tripEvents);
+  }
+
+  getElement() {
+    if (this._element) {
+      return this._element;
+    }
+
+    return createElement(this.getTemplate());
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}
