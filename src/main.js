@@ -4,15 +4,15 @@ import TripCostView from './views/trip-cost.js';
 import StatisticsView from './views/statistics.js';
 import LoadingView from './views/loading.js';
 import TripEventsView from './views/trip-events.js';
-import { createTripEventTemplate } from './views/trip-event.js';
-import { createTripEventEditTemplate } from './views/trip-event-edit.js';
+import TripEvent from './views/trip-event.js';
+import TripEventEdit from './views/trip-event-edit.js';
 import NavigationView from './views/navigation.js';
 import FiltersView from './views/filters.js';
 import SortingView from './views/sorting.js';
 
 import { generateTripEvent } from './mock/trip-event.js';
 import { getUnixDate } from './utils/date.js';
-import { Positions, renderTemplate, renderElement } from './utils/dom.js';
+import { Positions, renderElement } from './utils/dom.js';
 
 generateTripEvent();
 
@@ -41,7 +41,7 @@ renderElement(pageTripEventsElement, new LoadingView().getElement(), Positions.B
 renderElement(pageTripEventsElement, new StatisticsView().getElement(), Positions.AFTER_END);
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
-renderTemplate(pageEventListElement, createTripEventEditTemplate(generateTripEvent()), Positions.BEFORE_END);
+renderElement(pageEventListElement, new TripEventEdit(generateTripEvent()).getElement(), Positions.BEFORE_END);
 TRIP_EVENTS
-  .forEach((tripEvent) => renderTemplate(pageEventListElement, createTripEventTemplate(tripEvent), Positions.BEFORE_END));
+  .forEach((tripEvent) => renderElement(pageEventListElement, new TripEvent(tripEvent).getElement(), Positions.BEFORE_END));
 

@@ -1,4 +1,5 @@
 import { getDuration, formatDuration, formatDate } from '../utils/date.js';
+import { createElement } from '../utils/dom.js';
 
 const createOfferItemTemplate = ({title, price}) => (
   `<li class="event__offer">
@@ -10,7 +11,7 @@ const createOfferItemTemplate = ({title, price}) => (
 
 const createDurationTemplate = (dateFrom, dateTo) => formatDuration(getDuration(dateFrom, dateTo));
 
-export const createTripEventTemplate = ({dateFrom = null, dateTo = null, type = 'bus', destination = {}, basePrice = '', offers = [], isFavorite = false}) => (
+const createTripEventTemplate = ({dateFrom = null, dateTo = null, type = 'bus', destination = {}, basePrice = '', offers = [], isFavorite = false}) => (
   `<li class="trip-events__item">
     <div class="event">
       <time class="event__date" datetime="${formatDate(dateFrom, 'YYYY-MM-DD')}">
@@ -51,3 +52,26 @@ export const createTripEventTemplate = ({dateFrom = null, dateTo = null, type = 
     </div>
   </li>`
 );
+
+export default class TripEvent {
+  constructor(tripEvent) {
+    this._element = null;
+    this._tripEvent = tripEvent;
+  }
+
+  getTemplate() {
+    return createTripEventTemplate(this._tripEvent);
+  }
+
+  getElement() {
+    if (this._element) {
+      return this._element;
+    }
+
+    return createElement(this.getTemplate());
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}

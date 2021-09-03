@@ -2,6 +2,20 @@ import { tripEventTypes } from '../mock/event-types.js';
 import { destinations } from '../mock/destinations.js';
 import { offers as availableOffers } from '../mock/offers.js';
 import { formatDate } from '../utils/date.js';
+import { createElement } from '../utils/dom.js';
+
+const EMPTY_TRIP_EVENT = {
+  type: 'bus',
+  destination: {
+    name: '',
+    description: '',
+    pictures: [],
+  },
+  dateFrom: null,
+  dateTo: null,
+  basePrice: '',
+  offers: [],
+};
 
 const createEventTypeTemplate = (type, currentType) => (
   `<div class="event__type-item">
@@ -50,7 +64,7 @@ const createPicturesTemplate = (pictures) => (
   pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}">`).join('')
 );
 
-export const createTripEventEditTemplate = ({type = 'bus', destination = {}, dateFrom = null, dateTo = null, basePrice = '', offers = []} = {}) => (
+const createTripEventEditTemplate = ({type, destination, dateTo, dateFrom, offers, basePrice } = EMPTY_TRIP_EVENT) => (
   `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -112,7 +126,7 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {}, dat
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${destination.description ? destination.description : ''}</p>
+          <p class="event__destination-description">${destination.description}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
               ${destination.pictures ? createPicturesTemplate(destination.pictures) : ''}
@@ -123,3 +137,26 @@ export const createTripEventEditTemplate = ({type = 'bus', destination = {}, dat
     </form>
   </li>`
 );
+
+export default class TripEventEdit {
+  constructor(tripEvent) {
+    this._element = null;
+    this._tripEvent = tripEvent;
+  }
+
+  getTemplate() {
+    return createTripEventEditTemplate(this._tripEvent);
+  }
+
+  getElement() {
+    if (this._element) {
+      return this._element;
+    }
+
+    return createElement(this.getTemplate());
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}
