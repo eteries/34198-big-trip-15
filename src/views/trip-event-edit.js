@@ -129,7 +129,7 @@ const createTripEventEditTemplate = ({type, destination, dateTo, dateFrom, offer
           <p class="event__destination-description">${destination.description}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
-              ${destination.pictures ? createPicturesTemplate(destination.pictures) : ''}
+              ${destination.pictures.length ? createPicturesTemplate(destination.pictures) : ''}
             </div>
           </div>
         </section>
@@ -149,11 +149,11 @@ export default class TripEventEdit {
   }
 
   getElement() {
-    if (this._element) {
-      return this._element;
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
     }
 
-    return createElement(this.getTemplate());
+    return this._element;
   }
 
   removeElement() {
