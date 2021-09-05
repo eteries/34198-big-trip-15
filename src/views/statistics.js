@@ -1,3 +1,5 @@
+import { createElement } from '../utils/dom.js';
+
 const STATISTICS_ITEMS = [
   {title: 'money'},
   {title: 'type'},
@@ -14,3 +16,25 @@ export const createStatisticsTemplate = () => (
     </div>`
   )).join('')}`
 );
+
+export default class Statistics {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createStatisticsTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element.parentNode.removeChild(this._element);
+  }
+}
