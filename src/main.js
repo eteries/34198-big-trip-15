@@ -44,17 +44,14 @@ const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__
 
 const renderEventElement = (tripEventData) => {
   const tripEventView = new TripEventView(tripEventData);
-  const tripEventEditComponent = new TripEventEditView(tripEventData);
-
-  const closeButton = tripEventEditComponent.getElement().querySelector('.event__rollup-btn');
-  const editForm = tripEventEditComponent.getElement().querySelector('.event--edit');
+  const tripEventEditView = new TripEventEditView(tripEventData);
 
   const openEditor = () => {
-    tripEventView.getElement().replaceWith(tripEventEditComponent.getElement());
+    tripEventView.getElement().replaceWith(tripEventEditView.getElement());
   };
 
   const closeEditor = () => {
-    tripEventEditComponent.getElement().replaceWith(tripEventView.getElement());
+    tripEventEditView.getElement().replaceWith(tripEventView.getElement());
   };
 
   const onDocumentKeyDown = (evt) => {
@@ -63,20 +60,19 @@ const renderEventElement = (tripEventData) => {
     }
   };
 
-  closeButton.addEventListener('click', () => {
-    closeEditor();
-    document.removeEventListener('keydown', onDocumentKeyDown);
-  });
-
-  editForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    closeEditor();
-    document.removeEventListener('keydown', onDocumentKeyDown);
-  });
-
   tripEventView.setOnOpenClick(() => {
     openEditor();
     document.addEventListener('keydown', onDocumentKeyDown);
+  });
+
+  tripEventEditView.setOnCloseClick(() => {
+    closeEditor();
+    document.removeEventListener('keydown', onDocumentKeyDown);
+  });
+
+  tripEventEditView.setOnSubmit(() => {
+    closeEditor();
+    document.removeEventListener('keydown', onDocumentKeyDown);
   });
 
   renderElement(pageEventListElement, tripEventView.getElement(), Positions.BEFORE_END);

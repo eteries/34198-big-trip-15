@@ -144,9 +144,34 @@ export default class TripEventEdit extends AbstractView {
     super();
 
     this._tripEvent = tripEvent;
+    this._onCloseClick = this._onCloseClick.bind(this);
+    this._onSubmit = this._onSubmit.bind(this);
+  }
+
+  _onCloseClick() {
+    this._callbacks.onCloseClick();
+  }
+
+  _onSubmit(evt) {
+    evt.preventDefault();
+    this._callbacks.onSubmit();
   }
 
   getTemplate() {
     return createTripEventEditTemplate(this._tripEvent);
+  }
+
+  setOnCloseClick(callback) {
+    this._callbacks.onCloseClick = callback;
+
+    const closeButton = this.getElement().querySelector('.event__rollup-btn');
+    closeButton.addEventListener('click', this._onCloseClick);
+  }
+
+  setOnSubmit(callback) {
+    this._callbacks.onSubmit = callback;
+
+    const form = this.getElement().querySelector('.event--edit');
+    form.addEventListener('submit', this._onSubmit);
   }
 }
