@@ -12,7 +12,7 @@ import SortingView from './views/sorting.js';
 
 import { generateTripEvent } from './mock/trip-event.js';
 import { getUnixDate } from './utils/date.js';
-import {isEscape, Positions, render, replace} from './utils/dom.js';
+import { isEscape, Positions, render, replace } from './utils/dom.js';
 
 generateTripEvent();
 
