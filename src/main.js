@@ -46,7 +46,6 @@ const renderEventElement = (tripEventData) => {
   const tripEventView = new TripEventView(tripEventData);
   const tripEventEditComponent = new TripEventEditView(tripEventData);
 
-  const openButton = tripEventView.getElement().querySelector('.event__rollup-btn');
   const closeButton = tripEventEditComponent.getElement().querySelector('.event__rollup-btn');
   const editForm = tripEventEditComponent.getElement().querySelector('.event--edit');
 
@@ -64,11 +63,6 @@ const renderEventElement = (tripEventData) => {
     }
   };
 
-  openButton.addEventListener('click', () => {
-    openEditor();
-    document.addEventListener('keydown', onDocumentKeyDown);
-  });
-
   closeButton.addEventListener('click', () => {
     closeEditor();
     document.removeEventListener('keydown', onDocumentKeyDown);
@@ -78,6 +72,11 @@ const renderEventElement = (tripEventData) => {
     evt.preventDefault();
     closeEditor();
     document.removeEventListener('keydown', onDocumentKeyDown);
+  });
+
+  tripEventView.setOnOpenClick(() => {
+    openEditor();
+    document.addEventListener('keydown', onDocumentKeyDown);
   });
 
   renderElement(pageEventListElement, tripEventView.getElement(), Positions.BEFORE_END);
