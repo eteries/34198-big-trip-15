@@ -12,7 +12,7 @@ import SortingView from './views/sorting.js';
 
 import { generateTripEvent } from './mock/trip-event.js';
 import { getUnixDate } from './utils/date.js';
-import { isEscape, Positions, renderElement} from './utils/dom.js';
+import {isEscape, Positions, render, replace} from './utils/dom.js';
 
 generateTripEvent();
 
@@ -25,20 +25,20 @@ const TRIP_EVENTS = new Array(RENDERED_EVENTS_NUMBER)
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripInfoView = new TripInfoView();
-renderElement(tripMainElement, tripInfoView.getElement(), Positions.AFTER_BEGIN);
+render(tripMainElement, tripInfoView, Positions.AFTER_BEGIN);
 
-renderElement(tripInfoView.getElement(), new TripRouteView(TRIP_EVENTS).getElement(), Positions.BEFORE_END);
-renderElement(tripInfoView.getElement(), new TripCostView(TRIP_EVENTS).getElement(), Positions.BEFORE_END);
+render(tripInfoView, new TripRouteView(TRIP_EVENTS), Positions.BEFORE_END);
+render(tripInfoView, new TripCostView(TRIP_EVENTS), Positions.BEFORE_END);
 
 const controlsElement = tripMainElement.querySelector('.trip-controls');
-renderElement(controlsElement, new NavigationView().getElement(), Positions.BEFORE_END);
-renderElement(controlsElement, new FiltersView().getElement(), Positions.BEFORE_END);
+render(controlsElement, new NavigationView(), Positions.BEFORE_END);
+render(controlsElement, new FiltersView(), Positions.BEFORE_END);
 
 const pageTripEventsElement = document.querySelector('.trip-events');
-renderElement(pageTripEventsElement, new SortingView().getElement(), Positions.BEFORE_END);
-renderElement(pageTripEventsElement, new TripEventsView(TRIP_EVENTS.length).getElement(), Positions.BEFORE_END);
-renderElement(pageTripEventsElement, new LoadingView().getElement(), Positions.BEFORE_END);
-renderElement(pageTripEventsElement, new StatisticsView().getElement(), Positions.AFTER_END);
+render(pageTripEventsElement, new SortingView(), Positions.BEFORE_END);
+render(pageTripEventsElement, new TripEventsView(TRIP_EVENTS.length), Positions.BEFORE_END);
+render(pageTripEventsElement, new LoadingView(), Positions.BEFORE_END);
+render(pageTripEventsElement, new StatisticsView(), Positions.AFTER_END);
 
 const pageEventListElement = pageTripEventsElement.querySelector('.trip-events__list');
 
@@ -46,13 +46,8 @@ const renderEventElement = (tripEventData) => {
   const tripEventView = new TripEventView(tripEventData);
   const tripEventEditView = new TripEventEditView(tripEventData);
 
-  const openEditor = () => {
-    tripEventView.getElement().replaceWith(tripEventEditView.getElement());
-  };
-
-  const closeEditor = () => {
-    tripEventEditView.getElement().replaceWith(tripEventView.getElement());
-  };
+  const openEditor = () => replace(tripEventView, tripEventEditView);
+  const closeEditor = () => replace(tripEventEditView, tripEventView);
 
   const onDocumentKeyDown = (evt) => {
     if (isEscape(evt)) {
@@ -75,7 +70,7 @@ const renderEventElement = (tripEventData) => {
     document.removeEventListener('keydown', onDocumentKeyDown);
   });
 
-  renderElement(pageEventListElement, tripEventView.getElement(), Positions.BEFORE_END);
+  render(pageEventListElement, tripEventView, Positions.BEFORE_END);
 };
 
 if (TRIP_EVENTS.length) {
