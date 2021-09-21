@@ -1,5 +1,6 @@
 import { formatTripInterval } from '../utils/date.js';
-import { createElement } from '../utils/dom.js';
+
+import AbstractView from './abstract-view';
 
 export const createTripRouteTemplate = (tripEvents) => {
   if (!tripEvents.length) {
@@ -20,25 +21,14 @@ export const createTripRouteTemplate = (tripEvents) => {
   </div>`;
 };
 
-export default class TripRoute {
+export default class TripRoute extends AbstractView {
   constructor(tripEvents) {
-    this._element = null;
+    super();
+
     this._tripEvents = tripEvents;
   }
 
   getTemplate() {
     return createTripRouteTemplate(this._tripEvents);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element.parentNode.removeChild(this._element);
   }
 }

@@ -1,4 +1,4 @@
-import { createElement } from '../utils/dom.js';
+import AbstractView from './abstract-view';
 
 const createTripEventsTemplate = (tripEventsNum) => (
   tripEventsNum
@@ -6,25 +6,14 @@ const createTripEventsTemplate = (tripEventsNum) => (
     : '<p class="trip-events__msg">Click New Event to create your first point</p>'
 );
 
-export default class TripEvents {
+export default class TripEvents extends AbstractView {
   constructor(tripEventsNum) {
-    this._element = null;
+    super();
+
     this._tripEventsNum = tripEventsNum;
   }
 
   getTemplate() {
     return createTripEventsTemplate(this._tripEventsNum);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element.parentNode.removeChild(this._element);
   }
 }

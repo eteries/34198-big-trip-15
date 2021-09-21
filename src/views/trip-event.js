@@ -1,5 +1,5 @@
 import { getDuration, formatDuration, formatDate } from '../utils/date.js';
-import { createElement } from '../utils/dom.js';
+import AbstractView from './abstract-view';
 
 const createOfferItemTemplate = ({title, price}) => (
   `<li class="event__offer">
@@ -53,25 +53,14 @@ const createTripEventTemplate = ({dateFrom = null, dateTo = null, type = 'bus', 
   </li>`
 );
 
-export default class TripEvent {
+export default class TripEvent extends AbstractView {
   constructor(tripEvent) {
-    this._element = null;
+    super();
+
     this._tripEvent = tripEvent;
   }
 
   getTemplate() {
     return createTripEventTemplate(this._tripEvent);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element.parentNode.removeChild(this._element);
   }
 }

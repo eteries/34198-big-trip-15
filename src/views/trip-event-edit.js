@@ -2,7 +2,8 @@ import { tripEventTypes } from '../mock/event-types.js';
 import { destinations } from '../mock/destinations.js';
 import { offers as availableOffers } from '../mock/offers.js';
 import { formatDate } from '../utils/date.js';
-import { createElement } from '../utils/dom.js';
+
+import AbstractView from './abstract-view';
 
 const EMPTY_TRIP_EVENT = {
   type: 'bus',
@@ -138,25 +139,14 @@ const createTripEventEditTemplate = ({type, destination, dateTo, dateFrom, offer
   </li>`
 );
 
-export default class TripEventEdit {
+export default class TripEventEdit extends AbstractView {
   constructor(tripEvent) {
-    this._element = null;
+    super();
+
     this._tripEvent = tripEvent;
   }
 
   getTemplate() {
     return createTripEventEditTemplate(this._tripEvent);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element.parentNode.removeChild(this._element);
   }
 }
